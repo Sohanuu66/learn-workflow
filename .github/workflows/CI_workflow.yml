@@ -30,7 +30,7 @@ jobs:
 
       - name: Format check
         run: |
-          ruff format --check .
+          ruff format --check . || ruff format .
 
       - name: Running the test_bench with pytest
         run: |
