@@ -1,0 +1,40 @@
+name: CI for pytest and ruff
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Set up python ${{matrix.python-version}}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{matrix.python-version}}
+
+      - name: Installing dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pytest
+
+      - name: Lint on ruff
+        run: |
+          ruff check .
+
+      - name: Format check
+        run: |
+          ruff format --check .
+
+      - name: Running the test_bench with pytest
+        run: |
+          pytest
+        
+      
+        
